@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  public_chat_room_web:
+    container_name: public_chat_room_web
+
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    env_file:
+      - docker-envs/django.env
+    depends_on:
+      - public_chat_room_db
+    restart: always
+
+  public_chat_room_db:
+    container_name: public_chat_room_db
+
+    image: "postgres:13"
+    volumes:
+      - public_chat_room_db:/var/lib/postgresql/data
+    env_file:
+      - docker-envs/postgres.env
+    restart: always
+
+volumes:
+  public_chat_room_db:
