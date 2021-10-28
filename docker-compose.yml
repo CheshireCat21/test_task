@@ -5,7 +5,7 @@ services:
     container_name: public_chat_room_web
 
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
@@ -22,6 +22,8 @@ services:
     image: "postgres:13"
     volumes:
       - public_chat_room_db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     env_file:
       - docker-envs/postgres.env
     restart: always
